@@ -115,7 +115,12 @@ SIGNAL (DCF77_vect)
 SIGNAL (SIG_COMPARATOR)
 #endif
 {
+#if defined(CLOCK_CRYSTAL_SUPPORT)
+	/* Correct TCNT value for 0.5 HZ clock interrupt */
+	uint8_t TCNT2temp = (TCNT2 + clock_crystal_interrupt_drop * 0xFF) / 2;
+#else
 	uint8_t TCNT2temp = TCNT2;
+#endif
 	/* 1/256 since last signal pulse */
 	uint16_t divtime = (TCNT2temp + (clock_get_time() - dcf.timerover) * 0xFF) - dcf.TCNT2last;
 
