@@ -53,6 +53,11 @@
 #endif
 #endif
 
+#if defined(CLOCK_CRYSTAL_SUPPORT)
+/* expose variable, so we can use it as a half second carry bit */
+extern uint8_t clock_crystal_interrupt_drop;
+#endif
+
 struct clock_datetime_t {
     uint8_t sec;
     union {

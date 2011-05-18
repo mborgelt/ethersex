@@ -40,6 +40,10 @@ static int16_t delta;
 static uint16_t ntp_count;
 static uint16_t dcf_count;
 
+#if defined(CLOCK_CRYSTAL_SUPPORT)
+uint8_t clock_crystal_interrupt_drop = 0;
+#endif
+
 #define NTP_RESYNC_PERIOD 1800
 
 #ifdef NTP_SUPPORT
@@ -104,7 +108,6 @@ SIGNAL (CLOCK_SIG)
 #if defined(CLOCK_CRYSTAL_SUPPORT)
   /* If we use Crystal Support we have an interrupt every 0.5
      seconds, so we have to drop every second interrupt */
-  static uint8_t clock_crystal_interrupt_drop = 0;
   clock_crystal_interrupt_drop ^= 1;
   if (clock_crystal_interrupt_drop)
     return;
